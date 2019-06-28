@@ -10,8 +10,8 @@ def reload_jcasc(*agrs, **keywords):
             params={"casc-reload-token": keywords["token"]})
         response.raise_for_status()
     except Exception as err:
-        logging.error("Reloaded Jenkins configurations was failed")
+        logging.error("Reload Jenkins configurations was failed")
         logging.error("%s" % err)
     else:
-        logging.info("Reloaded Jenkins configurations successfully")
+        logging.info("Reload Jenkins configurations successfully")
 
