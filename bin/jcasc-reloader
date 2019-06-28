@@ -1,0 +1,46 @@
+#!/usr/bin/env python
+
+import signal
+import sys
+import os
+
+from jcasc_reloader.app import Application
+
+
+def eprint(message):
+    sys.stderr.write(message)
+    sys.exit(1)
+
+
+def sigterm_handler(signum, frame):
+    if application and signal.SIGTERM == signum:
+        application.stop()
+
+
+if __name__ == '__main__':
+    if not os.environ.get("JCASC_DIR"):
+        eprint("JCASC_DIR environment is required")
+    if not os.environ.get("JENKINS_URL"):
+        eprint("JENKINS_URL environment is required")
+    if not os.environ.get("JCASC_RELOAD_TOKEN"):
+        eprint("JCASC_RELOAD_TOKEN environment is required")
+    
+    ssl_verify = os.getenv('SSL_VERIFY', True)
+    ssl_verify = ssl_verify in ['true', 'True', '1', 'yes', 'Yes']
+    cfg = {
+        'jcascDir': os.environ.get("JCASC_DIR"),
+        'jenkins_url': os.environ.get("JENKINS_URL"),
+        'token': os.environ.get("JCASC_RELOAD_TOKEN"),
+        'verify': ssl_verify,
+        'logging': {
+            'level': os.getenv('LOG_LEVEL', 'INFO'),
+            'file': {
+                'path': os.getenv('LOG_LEVEL', '/var/log/jcasc-reloader.log'),
+                'maxbytes': os.getenv('LOG_LEVEL', 1250000),
+                'backupCount': os.getenv('LOG_LEVEL', 10)
+            }
+        }
+    }
+    signal.signal(signal.SIGTERM, sigterm_handler)
+    application = Application(**cfg)
+    sys.exit(application.run())
