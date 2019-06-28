@@ -18,7 +18,7 @@ RUN apk --no-cache update && \
     rm -rf /root/.cache && \
     mkdir -p /var/jcasc-reloader
 
-WORKDIR /var/db-backup
+WORKDIR /var/jcasc-reloader
 
 COPY --from=builder /usr/src/app/dist/jcasc_reloader*.whl .
 RUN pip install --no-cache-dir jcasc_reloader*.whl
