@@ -2,6 +2,10 @@ import logging
 import requests
 
 
+## POST requests will be turned into GETs, unless we set strict_mode to True
+requests.defaults.defaults['strict_mode'] = True
+
+
 def reload_jcasc(*agrs, **keywords):
     logging.info("Reloading Jenkins configurations...")
     try:
