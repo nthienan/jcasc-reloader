@@ -8,7 +8,7 @@ ENV TZ=Asia/Bangkok
 
 RUN apk --no-cache update && \
     apk --no-cache upgrade && \
-    apk --no-cache add tzdata python3 && \
+    apk --no-cache add tzdata python3 curl && \
     python3 -m ensurepip && \
     rm -r /usr/lib/python*/ensurepip && \
     pip3 install --upgrade pip setuptools && \
